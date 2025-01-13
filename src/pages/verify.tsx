@@ -4,11 +4,10 @@ import Head from "next/head";
 import { useAccount } from "wagmi";
 import SocialAccounts from "../components/SocialAccounts";
 import AddNewSocialAccount from "../components/AddNewSocialAccount";
-import AddPost from "../components/AddPost";
-import UserPosts from "../components/UserPosts";
+import Verify from "../components/Verify";
 
 const Home: NextPage = () => {
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
 
   return (
     <div>
@@ -23,11 +22,7 @@ const Home: NextPage = () => {
 
       <main>
         <ConnectButton />
-
-        {isConnected && <SocialAccounts />}
-        {isConnected && <AddNewSocialAccount />}
-        {isConnected && <AddPost />}
-        {isConnected && <UserPosts />}
+        <Verify />
       </main>
 
       <footer>

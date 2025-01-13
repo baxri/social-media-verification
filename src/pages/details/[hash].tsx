@@ -2,14 +2,18 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useAccount } from "wagmi";
-import SocialAccounts from "../components/SocialAccounts";
-import AddNewSocialAccount from "../components/AddNewSocialAccount";
-import AddPost from "../components/AddPost";
-import UserPosts from "../components/UserPosts";
+import SocialAccounts from "../../components/SocialAccounts";
+import AddNewSocialAccount from "../../components/AddNewSocialAccount";
+import Verify from "../../components/Verify";
+import PostDetails from "../../components/PostDetails";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
 
+  const router = useRouter();
+  const { hash } = router.query;
+  
   return (
     <div>
       <Head>
@@ -23,11 +27,7 @@ const Home: NextPage = () => {
 
       <main>
         <ConnectButton />
-
-        {isConnected && <SocialAccounts />}
-        {isConnected && <AddNewSocialAccount />}
-        {isConnected && <AddPost />}
-        {isConnected && <UserPosts />}
+        <PostDetails postHash={hash as string} />
       </main>
 
       <footer>
