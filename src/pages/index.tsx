@@ -6,6 +6,7 @@ import SocialAccounts from "../components/SocialAccounts";
 import AddNewSocialAccount from "../components/AddNewSocialAccount";
 import AddPost from "../components/AddPost";
 import UserPosts from "../components/UserPosts";
+import AllPosts from "../components/AllPosts";
 
 const Home: NextPage = () => {
   const { isConnected } = useAccount();
@@ -28,6 +29,9 @@ const Home: NextPage = () => {
         {isConnected && <AddNewSocialAccount />}
         {isConnected && <AddPost />}
         {isConnected && <UserPosts />}
+      
+
+      <AllPosts />
       </main>
 
       <footer>

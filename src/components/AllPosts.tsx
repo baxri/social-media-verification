@@ -2,28 +2,17 @@ import { FC, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../constants";
 
-//0xba7fe6199415f993c1d1c5173fcee602bac7237201b1cf10841a7329260eb14f
-//0x88cc3adcbc9f29776173751421c6981379e3b8b3f6dd53b34c0822d0bc166dee
-//0xcda17e457b63825a70cb9f72fe9c2f0c085b0d817243e0aff03cdb09e2c4a455
-
-
-
-
-const UserPosts: FC = () => {
-  const { address, isConnected } = useAccount();
+const AllPosts: FC = () => {
 
   const { data: posts } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
-    functionName: "getUserPosts",
-    args: [address as `0x${string}`],
+    functionName: "getAllPosts",
   });
-
-  if (!isConnected) return null;
 
   return (
     <div>
-      <h2>Your Posts</h2>
+      <h2>All Posts</h2>
       {posts?.length === 0 ? (
         <p>No posts found</p>
       ) : (
@@ -45,4 +34,4 @@ const UserPosts: FC = () => {
   );
 };
 
-export default UserPosts;
+export default AllPosts;
