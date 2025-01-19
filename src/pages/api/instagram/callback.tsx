@@ -13,47 +13,46 @@ export default async function handler(
   // Extract authorization code from query params
   const { code } = req.query;
 
-  // if (!code) {
-  //   return res.status(400).json({ error: "No authorization code provided" });
-  // }
+  if (!code) {
+    return res.status(400).json({ error: "No authorization code provided" });
+  }
 
   try {
     // Exchange code for access token
-    // const tokenResponse = await fetch(
-    //   "https://api.instagram.com/oauth/access_token",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/x-www-form-urlencoded",
-    //     },
-    //     body: new URLSearchParams({
-    //       client_id: '1952722025237124',
-    //       client_secret: '91f7cb4ee220d0bd82ae1b838297053f',
-    //       grant_type: "authorization_code",
-    //       redirect_uri: 'https://www.myauto.ge/ka/',
-    //       code: code as string,
-    //     }),
-    //   }
-    // );
+    const tokenResponse = await fetch(
+      "https://api.instagram.com/oauth/access_token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          client_id: '1952722025237124',
+          client_secret: '91f7cb4ee220d0bd82ae1b838297053f',
+          grant_type: "authorization_code",
+          redirect_uri: 'https://www.myauto.ge/ka/',
+          code: code as string,
+        }),
+      }
+    );
 
-    // if (!tokenResponse.ok) {
-    //   throw new Error("Failed to exchange code for token");
-    // }
+    if (!tokenResponse.ok) {
+      throw new Error("Failed to exchange code for token");
+    }
 
-    // const tokenData = await tokenResponse.json();
+    const tokenData = await tokenResponse.json();
 
-    // // Get Instagram user profile
-    // const userResponse = await fetch(
-    //   `https://graph.instagram.com/me?fields=id,username&access_token=${tokenData.access_token}`
-    // );
+    // Get Instagram user profile
+    const userResponse = await fetch(
+      `https://graph.instagram.com/me?fields=id,username&access_token=${tokenData.access_token}`
+    );
 
-    // if (!userResponse.ok) {
-    //   throw new Error("Failed to fetch user data");
-    // }
+    if (!userResponse.ok) {
+      throw new Error("Failed to fetch user data");
+    }
 
-    // const userData = await userResponse.json();
+    const userData = await userResponse.json();
     // const username = userData.username;
-
 
     const requestId = req.cookies.requestId;
     const address = req.cookies.address;

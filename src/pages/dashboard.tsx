@@ -1,16 +1,17 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useAccount } from "wagmi";
 import SocialAccounts from "../components/SocialAccounts";
 import AddNewSocialAccount from "../components/AddNewSocialAccount";
-import Verify from "../components/Verify";
+import AddPost from "../components/AddPost";
+import UserPosts from "../components/UserPosts";
+import AllPosts from "../components/AllPosts";
 import Header from "../components/Header";
-import Layout from "../components/Layout";
 import Footer from "../components/Footer";
+import Layout from "../components/Layout";
 
-const Home: NextPage = () => {
-  const { address, isConnected } = useAccount();
+const Dashboard: NextPage = () => {
+  const { isConnected } = useAccount();
 
   return (
     <div>
@@ -22,13 +23,11 @@ const Home: NextPage = () => {
         />
         <link href="/favicon.ico" rel="icon" />
       </Head>
-
-
-
       <Header />
       <Layout>
         <main>
-          {isConnected &&  <Verify />}
+          {isConnected && <SocialAccounts />}
+          {isConnected && <UserPosts />}
         </main>
       </Layout>
       <Footer />
@@ -36,4 +35,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

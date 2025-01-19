@@ -56,7 +56,6 @@ export default async function handler(
     console.log('signature', signature);
 
 
-    // return res.redirect(`/verify?signature=${signature}&requestId=${requestId}&username=${username}&platform=${platform}`);
     // return res.status(200).json({ redirect: LOGIN_URL });
     return res.status(200).json({ redirect: `/verify?signature=${signature}&requestId=${requestId}&username=${username}&platform=${platform}` });
   } catch (error) {

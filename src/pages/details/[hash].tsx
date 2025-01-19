@@ -7,13 +7,16 @@ import AddNewSocialAccount from "../../components/AddNewSocialAccount";
 import Verify from "../../components/Verify";
 import PostDetails from "../../components/PostDetails";
 import { useRouter } from "next/router";
+import Header from "../../components/Header";
+import Layout from "../../components/Layout";
+import Footer from "../../components/Footer";
 
 const Home: NextPage = () => {
   const { address, isConnected } = useAccount();
 
   const router = useRouter();
   const { hash } = router.query;
-  
+
   return (
     <div>
       <Head>
@@ -24,17 +27,13 @@ const Home: NextPage = () => {
         />
         <link href="/favicon.ico" rel="icon" />
       </Head>
-
-      <main>
-        <ConnectButton />
-        <PostDetails postHash={hash as string} />
-      </main>
-
-      <footer>
-        <a href="https://rainbow.me" rel="noopener noreferrer" target="_blank">
-          Made with ❤️ by your
-        </a>
-      </footer>
+      <Header />
+      <Layout>
+        <main>
+          <PostDetails postHash={hash as string} />
+        </main>
+      </Layout>
+      <Footer />
     </div>
   );
 };

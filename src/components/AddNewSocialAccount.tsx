@@ -35,6 +35,8 @@ const AddNewSocialAccount: FC = () => {
 
       const requestId = log?.args?.requestId;
 
+      console.log("requestId", requestId);
+
       if (requestId) {
         const response = await axios.post("/api/initialize", {
           requestId,
@@ -42,6 +44,8 @@ const AddNewSocialAccount: FC = () => {
           username: log?.args?.username,
           platform: log?.args?.platform,
         });
+
+        console.log("response", response);
 
         if (response.data.redirect) {
           window.location.href = response.data.redirect;
@@ -73,36 +77,53 @@ const AddNewSocialAccount: FC = () => {
       form.reset();
     } catch (error) {
       console.error("ERROR:", error);
-      setIsLoading(false); // Reset loading state if user rejects or there's an error
+      setIsLoading(false);
     }
   };
-
-  console.log("socialAccounts", socialAccounts);
 
   if (!isConnected) return null;
 
   return (
-    <div>
-      <h2>Add New Social Account</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input type="text" id="username" name="username" required />
+    <div >
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-2">
+          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            Username
+          </label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            className="mt-1 block w-full px-4 py-3 text-base rounded-md border-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          />
         </div>
-        <div>
-          <label htmlFor="platform">Platform</label>
-          <select id="platform" name="platform" required>
-            {["instagram", "twitter", "github"].map((platform) => (
+        <div className="space-y-2">
+          <label htmlFor="platform" className="block text-sm font-medium text-gray-700">
+            Platform
+          </label>
+          <select
+            id="platform"
+            name="platform"
+            required
+            className="mt-1 block w-full px-4 py-3 text-base rounded-md border-2 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          >
+            {["instagram"].map((platform) => (
               <option
                 key={platform}
                 value={platform}
+                className="capitalize"
               >
                 {platform}
               </option>
             ))}
           </select>
         </div>
-        <button type="submit" disabled={isLoading}>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           {isLoading ? "Adding..." : "Add Social Account"}
         </button>
       </form>

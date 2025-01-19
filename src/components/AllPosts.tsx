@@ -2,9 +2,12 @@ import { FC, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../constants";
 import { FaInstagram, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 const AllPosts: FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [tooltipText, setTooltipText] = useState<string | null>(null);
+  const router = useRouter();
   const { data: posts } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
@@ -24,6 +27,12 @@ const AllPosts: FC = () => {
       default:
         return null;
     }
+  };
+
+  const copyToClipboard = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setTooltipText(`${index}`);
+    setTimeout(() => setTooltipText(null), 2000);
   };
 
   const filteredPosts = posts?.filter((post) => {
@@ -104,9 +113,35 @@ const AllPosts: FC = () => {
                       {post.authorUsername}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-500">
-                      <a href={`https://polygonscan.com/tx/${post.postHash}`} target="_blank" rel="noopener noreferrer">
-                        {post.postHash.slice(0, 6)}...{post.postHash.slice(-4)}
-                      </a>
+                      <div className="flex items-center gap-2">
+                        <a 
+                          onClick={() => router.push(`/details/${post.postHash}`)}
+                          className="cursor-pointer hover:underline"
+                        >
+                          {post.postHash.slice(0, 6)}...{post.postHash.slice(-4)}
+                        </a>
+                        <div className="relative group">
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            width="16" 
+                            height="16" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            stroke="currentColor"
+                            strokeWidth="2" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round"
+                            className="cursor-pointer text-gray-400 hover:text-gray-600"
+                            onClick={() => copyToClipboard(post.postHash, index)}
+                          >
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                          </svg>
+                          <div className={`absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 transition-opacity ${tooltipText === `${index}` ? 'opacity-100' : 'group-hover:opacity-100'}`}>
+                            {tooltipText === `${index}` ? 'Copied!' : 'Copy to clipboard'}
+                          </div>
+                        </div>
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(Number(post.timestamp) * 1000).toLocaleString()}
