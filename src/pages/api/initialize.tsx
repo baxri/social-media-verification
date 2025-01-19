@@ -3,7 +3,7 @@ import { serialize } from "cookie";
 import { ethers } from "ethers";
 
 const LOGIN_URL =
-  "https://www.instagram.com/oauth/authorize?enable_fb_login=0&force_authentication=1&client_id=1952722025237124&redirect_uri=https://www.myauto.ge/ka/&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish";
+  "https://www.instagram.com/oauth/authorize?enable_fb_login=0&force_authentication=1&client_id=1952722025237124&redirect_uri=https://social-media-verification-puce.vercel.app/&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish";
 
 export default async function handler(
   req: NextApiRequest,
@@ -55,9 +55,8 @@ export default async function handler(
 
     console.log('signature', signature);
 
-
-    // return res.status(200).json({ redirect: LOGIN_URL });
-    return res.status(200).json({ redirect: `/verify?signature=${signature}&requestId=${requestId}&username=${username}&platform=${platform}` });
+    return res.status(200).json({ redirect: LOGIN_URL });
+    // return res.status(200).json({ redirect: `/verify?signature=${signature}&requestId=${requestId}&username=${username}&platform=${platform}` });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }

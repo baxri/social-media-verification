@@ -1,3 +1,5 @@
+'use client';
+
 import { FC, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../constants";
@@ -8,11 +10,23 @@ const AllPosts: FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [tooltipText, setTooltipText] = useState<string | null>(null);
   const router = useRouter();
-  const { data: posts } = useReadContract({
+  const { data: realPosts } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
     functionName: "getAllPosts",
   });
+
+   // Mock data generation
+  const mockPosts = Array.from({ length: 50 }, (_, i) => ({
+    platform: ['Instagram', 'Facebook', 'LinkedIn', 'Twitter'][Math.floor(Math.random() * 4)],
+    authorUsername: `user${i + 1}`,
+    postHash: `0x${Math.random().toString(16).slice(2)}${Math.random().toString(16).slice(2)}${Math.random().toString(16).slice(2)}${Math.random().toString(16).slice(2)}${Math.random().toString(16).slice(2)}`,
+    timestamp: Math.floor(Date.now() / 1000) - Math.floor(Math.random() * 2592000), // Random time within last 30 days
+    postUrl: `https://www.instagram.com/reel/DE-PPSlSKOO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==`
+  }));
+
+  const posts = [...(realPosts || []), ...mockPosts];
+  // const posts = [...(realPosts || [])];
 
   const getPlatformIcon = (platform: string) => {
     switch (platform.toLowerCase()) {

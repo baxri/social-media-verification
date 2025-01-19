@@ -1,14 +1,19 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import dynamic from 'next/dynamic'
 import { useAccount } from "wagmi";
 import SocialAccounts from "../components/SocialAccounts";
 import AddNewSocialAccount from "../components/AddNewSocialAccount";
 import AddPost from "../components/AddPost";
 import UserPosts from "../components/UserPosts";
-import AllPosts from "../components/AllPosts";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Layout from "../components/Layout";
+
+
+const AllPosts = dynamic(() => import('../components/AllPosts'), {
+  ssr: false
+})
 
 const Home: NextPage = () => {
   const { isConnected } = useAccount();

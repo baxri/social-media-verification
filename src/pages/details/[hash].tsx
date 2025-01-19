@@ -1,15 +1,21 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { NextPage } from "next";
 import Head from "next/head";
+import dynamic from 'next/dynamic'
+
 import { useAccount } from "wagmi";
 import SocialAccounts from "../../components/SocialAccounts";
 import AddNewSocialAccount from "../../components/AddNewSocialAccount";
 import Verify from "../../components/Verify";
-import PostDetails from "../../components/PostDetails";
 import { useRouter } from "next/router";
+
 import Header from "../../components/Header";
 import Layout from "../../components/Layout";
 import Footer from "../../components/Footer";
+
+const PostDetails = dynamic(() => import('../../components/PostDetails'), {
+  ssr: false
+})
 
 const Home: NextPage = () => {
   const { address, isConnected } = useAccount();
